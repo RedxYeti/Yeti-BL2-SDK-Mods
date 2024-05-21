@@ -1,0 +1,24 @@
+{
+    "defaults": {
+        "authors": "RedxYeti",
+        "source": "https://github.com/RedxYeti/BL2-Revive-Time-Modifier",
+        "license": "GNU GPLv3"
+    },
+    "mods": [
+        {
+            "name": "Revive Time Modifier",
+            "description": [
+                "Using the scroller in the options, choose your time in seconds for how long it takes to revive teammates.\n",
+                "The options range from 0 to 10 seconds in 0.5 second increments."
+            ],
+            "tagline": "Choose how long it takes to revive teammates.",
+            "types": ["Utility", "Gameplay"],
+            "latest": "1.0",
+            "supports": ["BL2"],
+            "versions": {
+                "1.0": "https://github.com/RedxYeti/BL2-Revive-Time-Modifier/blob/main/ReviveTimeModifier.zip"
+            },
+            "requirements": {}
+        }
+    ]
+}
