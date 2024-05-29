@@ -25,8 +25,8 @@
             "description": [
                 "This mod automaically equips items when they spawn as long as your character can equip them, showing a message when it's equipped. \n",
                 "Excluded examples are items higher level than your character or classmods not for your character. \n",
-                "Options inclue: Font Size sliders for the messages and a few gunzerker options. \n",
-                "If you plan on playing gunzerker, make sure to check the known issues."
+                "Options include: Font Size sliders for the messages and a few gunzerker options. \n",
+                "If you plan on playing gunzerker, make sure to check the known issues on github."
             ],
             "tagline": "Automatically equips items when they spawn.",
             "types": ["Gameplay"],
