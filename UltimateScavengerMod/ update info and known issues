@@ -1,3 +1,7 @@
+Version 1.1b:
+I re-enabled auto swap to weapons when you dont have one in your hands because krieg was having issues.
+Id suggest 1.1 if youre having issues not having weapons in your hands occasionally.
+
 Four slot Gunzerker while gunzerkering is jank. The script will attempt to skip over your left hand weapon while gunzerking.
 If you dont have gun during action skill, you just have to press the quick slot key to get it back (1-4 or dpad).
 
