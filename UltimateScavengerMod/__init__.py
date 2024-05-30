@@ -422,7 +422,7 @@ class UltimateScav(SDKMod):
     Name = "Ultimate Scavenger Mod"
     Description = "Automatically equips items when they spawn."
     Author = "RedxYeti"
-    Version = "1.0"
+    Version = "1.1"
     SaveEnabledState = EnabledSaveType.LoadWithSettings
     Options = [oidOneSlot, oidOneZerker, oidMoreInfo, oidEquippedSize, oidNameSize, oidDescriptionSize]
     # oidManufacturer, oidRarity,
@@ -449,7 +449,7 @@ class UltimateScav(SDKMod):
         RegisterHook("WillowGame.WillowWeapon.DropFrom", "WeaponCreated", Weapon_Created)
         RegisterHook("WillowGame.DualWieldActionSkill.EquipInitialWeapons", "ZerkerStarted", Zerker_Started)
         RegisterHook("WillowGame.ActionSkill.OnActionSkillEnded", "SkillEnded", Skill_Ended)
-        RegisterHook("WillowGame.WillowInventoryManager.SwitchToBestWeapon", "SwitchWeapon", SwitchWeapon)
+        #RegisterHook("WillowGame.WillowInventoryManager.SwitchToBestWeapon", "SwitchWeapon", SwitchWeapon)
 
         #thanks onezerker :)
         LoadPackage("GD_Mercenary_Streaming_SF")
@@ -471,7 +471,7 @@ class UltimateScav(SDKMod):
         RemoveHook("WillowGame.WillowWeapon.DropFrom", "WeaponCreated")
         RemoveHook("WillowGame.DualWieldActionSkill.EquipInitialWeapons", "ZerkerStarted")
         RemoveHook("WillowGame.ActionSkill.OnActionSkillEnded", "SkillEnded")
-        RemoveHook("WillowGame.WillowInventoryManager.SwitchToBestWeapon", "SwitchWeapon")
+        #RemoveHook("WillowGame.WillowInventoryManager.SwitchToBestWeapon", "SwitchWeapon")
 
         #thanks onezerker :)
         if self.NumWeapObj is not None:
