@@ -34,7 +34,7 @@
             "latest": "1.0",
             "supports": ["BL2"],
             "versions": {
-                "1.1": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/blob/main/UltimateScavengerMod/UltimateScavengerMod.zip"
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/blob/main/UltimateScavengerMod/UltimateScavengerMod.zip"
             },
             "requirements": {}
         }
