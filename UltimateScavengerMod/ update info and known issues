@@ -1,4 +1,8 @@
-Version 1.1b:
+Version 1.2:
+Checks the ground around you when you level up, grabbing any nearby underleveled items.
+Fixed black rarity messages.
+
+Version 1.1:
 I re-enabled auto swap to weapons when you dont have one in your hands because krieg was having issues.
 Auto swap was disabled because when removing equipped weapons, it could be confusing which slot you were on if the game swapped it for you.
 
