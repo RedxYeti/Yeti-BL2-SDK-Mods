@@ -27,7 +27,8 @@
                 "Excluded examples are items higher level than your character or classmods not for your character. \n",
                 "Options include: Font Size sliders for the messages, more informative messages and a few gunzerker options. \n",
                 "If you plan on playing gunzerker, make sure to check the known issues on github. \n",
-                "Single player only."
+                "Single player only. \n",
+                "Nexus Mods: https://www.nexusmods.com/borderlands2/mods/412"
             ],
             "tagline": "Automatically equips items when they spawn.",
             "types": ["Gameplay"],
