@@ -9,7 +9,9 @@ def dist(a, b) -> float:
     d = 0.0
     d = math.sqrt((b.X - a.X)**2 + (b.Y - a.Y)**2 + (b.Z - a.Z)**2)
     return d
-
+    
+#called when any input is pressed, but only looks for secondary use being released
+#then looks for nearby vending machines that are ammo machines
 def SecondaryUsed(caller: UObject, function: UFunction, params: FStruct):
     PC = GetEngine().GamePlayers[0].Actor
     if params.Key == PC.PlayerInput.GetKeyForAction("UseSecondary") and params.Event == 1:
@@ -31,7 +33,7 @@ def SecondaryUsed(caller: UObject, function: UFunction, params: FStruct):
                         break
     return True
 
-
+#checks how many of an ammo type is needed to max out the value
 def GetAmountNeeded(PC, Index) -> int:
     CurrentAmount = RefillAmmoKeyInst.CurrentAmount[Index].GetValue(PC)
     CurrentAmount = CurrentAmount[0]
@@ -44,6 +46,8 @@ def GetAmountNeeded(PC, Index) -> int:
         needed = 0
     return int(needed)
 
+#finds the start of the usable items, while ignoring grenade mods
+#then uses that start point to create a new array to find how much it costs for all the ammo needed
 def GetTotalCost(PC, Object) -> int:
     TotalCost = 0
     RefillAmmoKeyInst.Usables = []
@@ -73,6 +77,7 @@ SMG = 72
 Sniper = 18
 """
 
+#handles showing a hud message depending on the conditions
 def ShowMessage(PC, HUDMovie, Cost):
     bEnoughCash = True if PC.PlayerReplicationInfo.GetCurrencyOnHand(0) >= Cost else False
     if HUDMovie is not None:
@@ -94,7 +99,7 @@ def ShowMessage(PC, HUDMovie, Cost):
             
         HUDMovie.AddTrainingText(message, title, 5, (), "", False, 0, PC.PlayerReplicationInfo, True)
 
-
+#waits for the secondary use key to be pressed, adds the ammo if confirmed
 def CheckConfirmation(caller: UObject, function: UFunction, params: FStruct):
     if not RefillAmmoKeyInst.AlreadyBought and params.Event == 1:
         if params.Key == RefillAmmoKeyInst.PC.PlayerInput.GetKeyForAction("UseSecondary"):
@@ -107,7 +112,8 @@ def CheckConfirmation(caller: UObject, function: UFunction, params: FStruct):
         if RefillAmmoKeyInst.HUDMovie is not None:
             RefillAmmoKeyInst.HUDMovie.ClearTrainingText()
     return True
-    
+
+#this is an auto time out for the hud message
 def StartTimeOut(caller: UObject, function: UFunction, params: FStruct):
     if time.time() - RefillAmmoKeyInst.StartTime >= 5 or dist(RefillAmmoKeyInst.Object.Location, RefillAmmoKeyInst.PC.CalcViewActorLocation) > 350 or RefillAmmoKeyInst.AlreadyBought:
         if RefillAmmoKeyInst.HUDMovie is not None:
@@ -115,6 +121,7 @@ def StartTimeOut(caller: UObject, function: UFunction, params: FStruct):
         ResetHooks()
     return True
 
+#unhooks everything and restarts the first press
 def ResetHooks():
     RefillAmmoKeyInst.AlreadyBought = False
     RemoveHook("WillowGame.WillowUIInteraction.InputKey", "SecondaryUsed")
@@ -137,6 +144,8 @@ class RefillAmmoKey(SDKMod):
         self.Object = None
         self.AmountsNeeded = []
         self.Usables = []
+
+        #sets vars to the relevant resource pools
         # Grenade
         self.GrenadeCurrent = FindObject("ResourcePoolAttributeDefinition", "D_Attributes.Ammo_Grenade_Protean.Ammo_Grenade_ProteanCurrentValue")
         self.GrenadeMax = FindObject("ResourcePoolAttributeDefinition", "D_Attributes.Ammo_Grenade_Protean.Ammo_Grenade_ProteanMaxValue")
