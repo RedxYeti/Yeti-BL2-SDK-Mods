@@ -99,7 +99,7 @@ def ShowMessage(PC, HUDMovie, Cost):
             
         HUDMovie.AddTrainingText(message, title, 5, (), "", False, 0, PC.PlayerReplicationInfo, True)
 
-#waits for the secondary use key to be pressed, adds the ammo if confirmed
+#waits for the secondary use key to be released, adds the ammo if confirmed
 def CheckConfirmation(caller: UObject, function: UFunction, params: FStruct):
     if not RefillAmmoKeyInst.AlreadyBought and params.Event == 1:
         if params.Key == RefillAmmoKeyInst.PC.PlayerInput.GetKeyForAction("UseSecondary"):
