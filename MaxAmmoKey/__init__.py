@@ -113,7 +113,7 @@ def CheckConfirmation(caller: UObject, function: UFunction, params: FStruct):
             RefillAmmoKeyInst.HUDMovie.ClearTrainingText()
     return True
 
-#this is an auto time out for the hud message
+#this is an auto time out for the hud message or if the player got to far away or already confirmed the purchase
 def StartTimeOut(caller: UObject, function: UFunction, params: FStruct):
     if time.time() - RefillAmmoKeyInst.StartTime >= 5 or dist(RefillAmmoKeyInst.Object.Location, RefillAmmoKeyInst.PC.CalcViewActorLocation) > 350 or RefillAmmoKeyInst.AlreadyBought:
         if RefillAmmoKeyInst.HUDMovie is not None:
