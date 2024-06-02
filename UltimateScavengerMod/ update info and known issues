@@ -6,7 +6,7 @@ Added an option to affect vendors when activating them.
 Adds a grenade like vanilla game if you get a grenade mod.
 
 Version 1.2:
-Checks the ground around you when you level up, grabbing any nearby underleveled items.
+Checks the ground around you when you level up, grabbing any nearby previously overleveled items.
 Fixed black rarity messages.
 
 Version 1.1:
