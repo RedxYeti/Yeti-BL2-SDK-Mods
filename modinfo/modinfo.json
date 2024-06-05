@@ -32,10 +32,10 @@
             ],
             "tagline": "Automatically equips items when they spawn.",
             "types": ["Gameplay"],
-            "latest": "1.31",
+            "latest": "1.32",
             "supports": ["BL2"],
             "versions": {
-                "1.31": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/UltimateScavengerMod"
+                "1.32": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/UltimateScavengerMod"
             },
             "requirements": {}
         }
