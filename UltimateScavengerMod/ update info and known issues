@@ -1,3 +1,9 @@
+Version 1.5:
+Fixed Gear not equipping while in vehicles.
+Added option to automatically pickup overleveled items.
+Added option to check through your inventory on level up.
+With these 2 options enabled you will automatically equip items when you reach their level.
+
 Version 1.32:
 Fixed some minor issues with item messages rarity colors.
 
