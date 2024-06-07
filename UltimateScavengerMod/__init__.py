@@ -495,7 +495,7 @@ class UltimateScav(SDKMod):
     Name = "Ultimate Scavenger Mod"
     Description = "Automatically equips items when they spawn."
     Author = "RedxYeti"
-    Version = "1.4"
+    Version = "1.5"
     SaveEnabledState = EnabledSaveType.LoadWithSettings
     Options = [oidOneSlot, 
                oidOneZerker, 
