@@ -20,6 +20,37 @@
             },
             "requirements": {}
         },
+         {
+            "name": "End Action Skill Key",
+            "description": [
+                "Adds a hotkey to force end your action skill. Most useful on Krieg and Sal."
+            ],
+            "tagline": "Force end your action skill.",
+            "types": ["Utility", "Gameplay"],
+            "latest": "1.0",
+            "supports": ["BL2"],
+            "versions": {
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/EndActionSkillKey"
+            },
+            "requirements": {}
+        },
+         {
+            "name": "Action Skill Countdown Timer",
+            "description": [
+                "When your action skill ends, a timer will start on your hud. \n",
+                "The timer is fairly customizable, you can change its color, position, size and font. \n",
+                "Note: The timer is more based on your action skill cooldown rate more than actual seconds. \n",
+                "Thanks to ZetaDaemon for the farm counter, which made this possible."
+            ],
+            "tagline": "Adds a timer to your hud when your action skill is on cooldown.",
+            "types": ["Utility", "Gameplay"],
+            "latest": "1.0",
+            "supports": ["BL2"],
+            "versions": {
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/ActionSkillCountdown"
+            },
+            "requirements": {}
+        },
         {
             "name": "Ultimate Scavenger Mod",
             "description": [
