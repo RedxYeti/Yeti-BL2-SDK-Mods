@@ -57,7 +57,8 @@
                 "Afterburn duration \n",
                 "Afterburn regen rate \n",
                 "Afterburn regen delay \n",
-                "I most made this so I could afterburn right away like borderlands 1."
+                "For the runner, technical and hovercraft. \n",
+                "I mostly made this so I could afterburn right away like borderlands 1."
             ],
             "tagline": "Change afterburn values for the runner, technical and hovercraft.",
             "types": ["Utility", "Gameplay"],
