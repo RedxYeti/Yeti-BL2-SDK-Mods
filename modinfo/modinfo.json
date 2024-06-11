@@ -60,7 +60,7 @@
                 "I most made this so I could afterburn right away like borderlands 1."
             ],
             "tagline": "Change afterburn values for the runner, technical and hovercraft.",
-            "types": ["Utility"],
+            "types": ["Utility", "Gameplay"],
             "latest": "1.0",
             "supports": ["BL2"],
             "versions": {
