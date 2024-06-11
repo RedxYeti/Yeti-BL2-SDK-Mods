@@ -11,9 +11,14 @@ You can also use Shift, Control or Alt before commands. You can also leave comme
 #Drop Reload Example
 Shift + Seven, ThrowWeapon, PickupSomething 1
 
+Lastly, you can update your binds without closing the game if you set up a UpdateBinding command.
 
+#Update Bindings
+RightShift, UpdateBindings
 
 Below are the commands with thier names. Name= Command.
+
+UpdateBindings= UpdateBindings
 
 ActionSkill= StartActionSkill
 
