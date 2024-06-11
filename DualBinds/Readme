@@ -1,0 +1,103 @@
+Dual Binds will accept any key input and run any command after it.
+For example, if you want your mousewheel scroll to also be use and pick up items it would look like this:
+
+MouseScrollUp, Use, PickupSomething 0
+MouseScrollDown, Use, PickupSomething 0
+
+There's no limit to how many commands you put as long as each is separated by a comma. If you want a key to do 10 things, that will work.
+
+You can also use Shift, Control or Alt before commands. You can also leave comments for binds using # at the front of the line.
+
+#Drop Reload Example
+Shift + Seven, ThrowWeapon, PickupSomething 1
+
+
+
+Below are the commands with thier names. Name= Command.
+
+ActionSkill= StartActionSkill
+
+Afterburner= Turbo
+
+Crouch= DuckPressed
+Uncrouch= DuckReleased
+
+ExitVehicle= ExitVehicle
+
+Melee= Melee
+
+FireWeapon= StartFire
+StopFiringWeapon= StopFire
+
+Handbrake= Handbrake
+
+Give up Fight for your Life= InjuredSuicide
+
+Jump= Jump
+
+NextWeapon= NextWeapon
+
+Pickup= PickupSomething 0
+
+PickupEquip= PickupSomething 1
+
+PrevWeapon= PrevWeapon
+
+QuickSelectDown= EquipWeaponFromSlot QuickSelectDown
+
+QuickSelectLeft= EquipWeaponFromSlot QuickSelectLeft
+
+QuickSelectRight= EquipWeaponFromSlot QuickSelectRight
+
+QuickSelectUp= EquipWeaponFromSlot QuickSelectUp
+
+QuickSelectMenu= ShowQuickSelectWeaponMenu
+
+Reload= Reload
+
+RevivePlayer= RevivePressed
+
+Chat= StartTextChat
+
+ShowChallenges= ShowStatusMenu_Challenges
+
+ShowInventory= ShowStatusMenu_Inventory
+
+ShowLogs= ShowStatusMenu_Logs
+
+ShowMap= ShowMap
+
+ShowMenu= ShowMenu
+
+ShowSkills= ShowStatusMenu_Skills
+
+ShowStatusMenu= ShowStatusMenu
+
+StartSprint= SprintPressed
+EndSprint= SprintReleased
+
+SwitchSeats= SwitchSeats
+
+ThrowGrenade= ThrowGrenade
+
+ThrowWeapon= ThrowWeapon
+
+Trade= AttemptTrade
+
+Use= Use
+
+Secondary Use= UseSecondary
+
+VehicleHorn= PlayVehicleHorn
+
+VehicleLookBack= VehicleLookBack
+VehicleStopLookBack= VehicleNoLookBack
+
+VehicleLookLeft= VehicleLookLeft
+VehicleStopLookLeft= VehicleNoLookLeft
+
+VehicleLookRight= VehicleLookRight
+VehicleStopLookRight= VehicleNoLookRight
+
+ZoomWeaponIn= StartAltFire
+ZoomWeaponOut= StopAltFire
