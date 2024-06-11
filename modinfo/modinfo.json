@@ -35,6 +35,40 @@
             "requirements": {}
         },
          {
+            "name": "Dual Binds",
+            "description": [
+                "This mod will allow you to have keys do multiple things. I highly suggest you read the readme and check out the example ini on github."
+            ],
+            "tagline": "Use an ini to allow keys to have more than 1 bind.",
+            "types": ["Utility"],
+            "latest": "1.0",
+            "supports": ["BL2"],
+            "versions": {
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/DualBinds"
+            },
+            "requirements": {}
+        },
+         {
+            "name": "Afterburn Tweaks",
+            "description": [
+                "Using this mod you can change: \n",
+                "Minimum start speed for afterburner \n",
+                "Afterburn speed \n",
+                "Afterburn duration \n",
+                "Afterburn regen rate \n",
+                "Afterburn regen delay \n",
+                "I most made this so I could afterburn right away like borderlands 1."
+            ],
+            "tagline": "Change afterburn values for the runner, technical and hovercraft.",
+            "types": ["Utility"],
+            "latest": "1.0",
+            "supports": ["BL2"],
+            "versions": {
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/AfterburnTweaks"
+            },
+            "requirements": {}
+        },
+         {
             "name": "Action Skill Countdown Timer",
             "description": [
                 "When your action skill ends, a timer will start on your hud. \n",
