@@ -2,6 +2,28 @@ This mod will randomize projectiles all over your game. There's 2 types of thing
 
 Firing modes are mostly used on weapons. Guns and vehicles use them.
 
-Projectiles are mostly used on grenades, however firing modes can have projectiles tied to them.
+Projectiles are mostly used on grenades, however firing modes can have projectiles tied to them. Weapons also have a 50/50 chance of projectiles being changed or even added to their firing mode.
 
-Prepping randomizer
+You'll see on the item card what each has been randomized to. 
+
+
+Prepping randomizer:
+I HIGHLY recommend you use the prep randomizer option in the settings. It will load multiple levels until it's found the set amount of firing modes and projectiles.
+
+The easiest way to prep the randomizer is to start a new boosted character, let it finish loading the maps, and then just delete that new boosted character.
+
+It only takes 2-3 minutes and you'll be set for your entire session.
+
+If you find your game crashing while trying to use the randomizer prep, id recommend lowering projectiles first, then firing modes.
+
+You can also use the 4gb patch on the exe, which may help a bit. https://ntcore.com/4gb-patch/
+
+
+Saving Items:
+Items will get saved to a text file in "saves" in the projectile randomizer. The save number will be the same as your character save number.
+
+Items only save when you save and quit to the main menu. 
+
+You can edit these saves by replacing the parts that you want. Youll just have to find the barrel, Firing mode, and/or projectile you want to replace in the text file.
+
+The mod also keeps track of every loaded firing mode and projectile in the saves folder in text files with their respective names.
