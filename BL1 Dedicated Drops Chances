@@ -94,17 +94,17 @@ Bulldog 15%
 The Destroyer:
 Destroyer 15% / Legendary Eridians 15% / Ironclad 2%
 
-Hank Reiss:
-Firehawk 15%
-
-Dr. Ned:
-Wildcat 15%
-
-Undead Dr. Ned:
-Defiler 15%
+Tumescent Rakk:
+Random Legendary 3%
 
 Pumpkinhead:
 Hellfire 20%
+
+Hank Reiss:
+Firehawk 15%
+
+Franken Bill:
+Orion 20% / Omega 2%
 
 Whiskey Wesley:
 Patriot / Gunman / Champion COMs 100%
@@ -118,23 +118,35 @@ Specialist / Professional / Eridian Warrior COMs 100%
 Jackie O’Callahan:
 Tank / Common Man / Badass COMs 100%
 
-Franken Bill:
-Orion 20% / Omega 2%
+Dr. Ned:
+Wildcat 15%
+
+Undead Dr. Ned:
+Defiler 15%
+
+Loot Goon:
+Random Legendary 10%
 
 Vulcana:
 Chiquito Amigo 100% / Protector 15% / Hybrid 2%
-
-Mr. Shank:
-Reaper 20%
-
-General Knoxx:
-Knoxx’s Gold 100% / Vengeance 20% / Nemesis 2% / Hybrid 2%
 
 Hera:
 Athena’s Wisdom 100% / Specter COM 33%
 
 Minerva:
 Ogre COM 33% / Firebomb 20%
+
+Ceresia:
+Truxican Wrestler COM 33% / Defender 15%
+
+Helicon:
+Marine COM 33% / Troll 20%
+
+Motorhead:
+Chopper 15% / Hammer 15%
+
+Mr. Shank:
+Reaper 20%
 
 Chaz:
 Bone Shredder 100% / Savior 20%
@@ -145,59 +157,17 @@ Kyros’ Power 100% / Cyclops 20% / Hybrid 2%
 Typhon:
 Typhoon 100% / Invader (Pistol) 20% / Tsunami 2%
 
-Motorhead:
-Chopper 15% / Hammer 15%
-
 Skyscraper:
 Stampeding Spatter 20%
 
 Ajax:
 Ajax Spear 100% / Ogre 15% / Hybrid 2%
 
-Ceresia:
-Truxican Wrestler COM 33% / Defender 15%
-
-Helicon:
-Marine COM 33% / Troll 20%
-
-Commandant Steele-Trap:
-Thanatos 20%
-
-Dr. Ned-Trap:
-Raven 15% / Aries 2%
-
-General Knoxx-Trap:
-Gemini 20%
-
-Interplanetary Ninja Assassin Claptrap:
-Revolution 20% / Avenger 2%
-
-Mega Interplanetary Ninja Assassin Claptrap:
-Nidhogg 15%
-
-Undead Ned-Trap:
-The Crux (Explosive) 20%
-
-Hyperion ‘Super Bad’ Soldier:
-Butcher 15%
-
-Cluck-Trap:
-Guardian 20%
-
-D-Fault:
-Hydra 20%
-
-Rakk-Trap Hive:
-Mongol 20%
+General Knoxx:
+Knoxx’s Gold 100% / Vengeance 20% / Nemesis 2% / Hybrid 2%
 
 Badass Devastator:
 Marine COM 33%
-
-Truxican Wrestler:
-Truxican Wrestler 33% / Random Legendary 10%
-
-Mini Steve:
-Random Legendary 10%
 
 Meat Popsicle:
 Random Legendary 10%
@@ -205,11 +175,43 @@ Random Legendary 10%
 Dumpster Diver:
 Random Legendary 10%
 
+Truxican Wrestler:
+Truxican Wrestler 33% / Random Legendary 10%
+
+Mini Steve:
+Random Legendary 10%
+
 Crimson Shorty:
 Random Legendary 10%
 
-Loot Goon:
-Random Legendary 10%
+Hyperion ‘Super Bad’ Soldier:
+Butcher 15%
 
-Bloated /Tumescent Rakk:
-Random Legendary 3%
+General Knoxx-Trap:
+Gemini 20%
+
+Cluck-Trap:
+Guardian 20%
+
+Dr. Ned-Trap:
+Raven 15% / Aries 2%
+
+D-Fault:
+Hydra 20%
+
+Commandant Steele-Trap:
+Thanatos 20%
+
+Rakk Hive-Trap:
+Mongol 20%
+
+Undead Ned-Trap:
+The Crux (Explosive) 20%
+
+Mega Interplanetary Ninja Assassin Claptrap:
+Nidhogg 15%
+
+Interplanetary Ninja Assassin Claptrap:
+Revolution 20% / Avenger 2%
+
+
