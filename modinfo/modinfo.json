@@ -20,7 +20,7 @@
             },
             "requirements": {}
         },
-         {
+        {
             "name": "End Action Skill Key",
             "description": [
                 "Adds a hotkey to force end your action skill. Most useful on Krieg and Sal."
@@ -34,6 +34,35 @@
             },
             "requirements": {}
         },
+        {
+            "name": "New Weapon On Kill",
+            "description": [
+                "After getting in game you'll want to enable the mod and choose your options. Also you can set up a hotkey to change weapons. \n",
+                "\n",
+                "Options include:\n",
+                "Weapon Type\n",
+                "Cursed weapons\n",
+                "How many kills between swaps\n",
+                "Showing the new weapon name on screen\n",
+                "\n",
+                "Known Issues:\n",
+                "Gaige sometimes gets shotguns with 0 shot mags youll have to reroll manually.\n",
+                "\n",
+                "Playing online:\n",
+                "If you have a gunzerker theyll want to host of thier action skill weapons will not swap properly.\n",
+                "If the gunzerker cannot host, they just need to press 2 or the dpad every after getting kills for the second gun to show up.\n",
+                "\n",
+                "Non hosts pressing the hotkey may get their backpack overflown. just drop all the weapons from your backpack to fix it.\n"
+            ],
+            "tagline": "Get a random weapon after getting a kill or kills.",
+            "types": ["Gameplay"],
+            "latest": "1.0",
+            "supports": ["BL2"],
+            "versions": {
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/NewWeaponOnKill"
+            },
+            "requirements": {}
+         },
          {
             "name": "Dual Binds",
             "description": [
