@@ -1,1 +1,16 @@
-heyo
+Readme and Known Issues:
+After getting in game you'll want to enable the mod and choose your options. Also you can set up a hotkey to change weapons.
+
+Options include:
+Weapon Type
+Cursed weapons
+How many kills between swaps
+Showing the new weapon name on screen
+
+Gaige sometimes gets shotguns with 0 shot mags youll have to reroll manually.
+
+Playing online:
+If you have a gunzerker theyll want to host of thier action skill weapons will not swap properly.
+If the gunzerker cannot host, they just need to press 2 every after getting kills for the second gun to show up.
+
+Non hosts pressing the hotkey may get their backpack overflown. just drop all the weapons from your backpack to fix it.
