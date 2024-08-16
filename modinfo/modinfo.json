@@ -83,9 +83,9 @@
                 "Randomizes Players, Enemies and Vehicles scale when they spawn.\n ",
                 "Players are randomized after dying as well. \n",
                 "If you're playing single player I highly recommend using the Alternate player scale.\n",
-                ".\n",
+                "\n",
                 "Wacky NPC Scale is only for fun. The only way to damage them is explosions or melee with that option on.\n",
-                ".\n",
+                "\n",
                 "This mod does work co op with a few issues:.\n",
                 "Cars only get rescaled for hosts.\n",
                 "Alternate player scale will not work correctly.\n"
