@@ -78,6 +78,28 @@
             "requirements": {}
         },
          {
+            "name": "Silly Scales",
+            "description": [
+                "Randomizes Players, Enemies and Vehicles scale when they spawn.\n ",
+                "Players are randomized after dying as well. \n",
+                "If you're playing single player I highly recommend using the Alternate player scale.\n",
+                ".\n",
+                "Wacky NPC Scale is only for fun. The only way to damage them is explosions or melee with that option on.\n",
+                ".\n",
+                "This mod does work co op with a few issues:.\n",
+                "Cars only get rescaled for hosts.\n",
+                "Alternate player scale will not work correctly.\n"
+            ],
+            "tagline": "Player, Enemy and Vehicle Scale Randomizer",
+            "types": ["Gameplay"],
+            "latest": "1.0",
+            "supports": ["BL2"],
+            "versions": {
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/SillyScales"
+            },
+            "requirements": {}
+        },
+         {
             "name": "Afterburn Tweaks",
             "description": [
                 "Using this mod you can change: \n",
