@@ -19,7 +19,7 @@ Place d3d9.dll from the x32 folder in the same folder as bl2/tps exe
 run it, and select your bl2/tps exe
 
 
-Prepping randomizer:
+Prepping the randomizer:
 I HIGHLY recommend you use the prep projectile randomizer option in the main menu.
 It will load multiple levels until it's found the set amount of firing modes and projectiles.
 
