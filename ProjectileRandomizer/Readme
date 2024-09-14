@@ -4,6 +4,7 @@ Firing modes are mostly used on weapons. Guns and vehicles use them.
 
 Projectiles are mostly used on grenades, however firing modes can have projectiles tied to them. 
 You'll find most weapons with different projectiles than thier firing modes, the projectile will come out of the weapon.
+Projectiles and Firing Modes will show on the item card.
 
 Weapons also have a 50/50 chance of projectiles being changed or even added to their firing mode.
 
