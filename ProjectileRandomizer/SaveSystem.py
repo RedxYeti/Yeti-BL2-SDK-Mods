@@ -1,9 +1,19 @@
-from unrealsdk import FindObject, GetEngine #type: ignore
+from unrealsdk import FindObject, GetEngine, Log, UObject, UFunction, FStruct #type: ignore
+from unrealsdk import RegisterHook, RemoveHook  #type: ignore
 import os
 import json
 import time
 
 lasttime = 0
+
+def PC() -> UObject:
+    return GetEngine().GamePlayers[0].Actor
+
+def ButtonCreated(caller: UObject, function: UFunction, params: FStruct):
+    if params.Caption == "$WillowMenu.WillowScrollingListDataProviderFrontEnd.Play_Continue":
+        PC().GFxUIManager.ShowTrainingDialog("Your save json has a broken entry! <br>You need to fix your json before continuing!", "Projectile Randomizer", 5)
+        RemoveHook("WillowGame.WillowScrollingList.AddListItem", "ButtonCreated")
+    return True
 
 def save_to_json(file_path, unique_ids_data):
     global lasttime
@@ -11,8 +21,7 @@ def save_to_json(file_path, unique_ids_data):
         #read only
         if time.time() - lasttime > 120:
             lasttime = time.time()
-            PC = GetEngine().GamePlayers[0].Actor
-            Hud = PC.GetHUDMovie()
+            Hud = PC().GetHUDMovie()
             if Hud:
                 Hud.ClearTrainingText()
                 Message = f"<font size='20'>Your current save json is read only!</font>"
@@ -35,7 +44,12 @@ def save_to_json(file_path, unique_ids_data):
 
 def load_from_json(file_path):
     with open(file_path, 'r') as file:
-        data = json.load(file)
+        try:
+            data = json.load(file)
+        except:
+            PC().ReturnToTitleScreen(True)
+            RegisterHook("WillowGame.WillowScrollingList.AddListItem", "ButtonCreated", ButtonCreated)
+            return    
     
     SavedIDs = {'UniqueIDs': {}}
     for unique_id, entry in data.items():

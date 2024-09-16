@@ -322,10 +322,11 @@ def LoadFromDict(item, UniqueID):
             DefData[5] = NewDelivery
             item.InitializeFromDefinitionData(tuple(DefData), None, True)
 
-def SaveItemsQuit(caller: UObject, function: UFunction, params: FStruct):
-    ProjRandomInst.PlayerLoad = True
-    ProjRandomInst.LoadFromText = True
-    save(caller, True)
+def SaveQuitItems(caller: UObject, function: UFunction, params: FStruct):
+    if not params.bSkipSave:
+        ProjRandomInst.PlayerLoad = True
+        ProjRandomInst.LoadFromText = True
+        save(caller, True)
     return True
 
 def save(caller, bCleanArray):
@@ -833,7 +834,7 @@ class ProjRandom(SDKMod):
         RegisterHook("WillowGame.WillowPlayerController.WillowClientDisableLoadingMovie", "AreaLoaded", AreaLoaded)
         RegisterHook("WillowGame.WillowAIPawn.PostStartingInventoryAdded", "PostInv", PostPawnInventory)
         RegisterHook("WillowGame.MissionRewardGFxObject.SetUpRewardsPage", "MissionReward", MissionReward)
-        RegisterHook("WillowGame.WillowPlayerController.ReturnToTitleScreen", "SaveItemsQuit", SaveItemsQuit)
+        RegisterHook("WillowGame.WillowPlayerController.ReturnToTitleScreen", "SaveQuitItems", SaveQuitItems)
         RegisterHook("WillowGame.WillowPlayerController.PlayerTick", "PlayerTickEditItems", PlayerTickEditItems)
         RegisterHook("WillowGame.Behavior_SpawnProjectile.ApplyBehaviorToContext", "SpawnedProjectile", SpawnedProjectile)
         RegisterHook("WillowGame.Behavior_AIThrowProjectileAtTarget.ApplyBehaviorToContext", "CombatProjectile", CombatProjectile)
@@ -856,7 +857,7 @@ class ProjRandom(SDKMod):
         RemoveHook("WillowGame.WillowPlayerController.WillowClientDisableLoadingMovie", "AreaLoaded")
         RemoveHook("WillowGame.WillowAIPawn.PostStartingInventoryAdded", "PostInv")
         RemoveHook("WillowGame.MissionRewardGFxObject.SetUpRewardsPage", "MissionReward")
-        RemoveHook("WillowGame.WillowPlayerController.ReturnToTitleScreen", "SaveItemsQuit")
+        RemoveHook("WillowGame.WillowPlayerController.ReturnToTitleScreen", "SaveQuitItems")
         RemoveHook("WillowGame.WillowPlayerController.PlayerTick", "PlayerTickEditItems")
         RemoveHook("WillowGame.Behavior_SpawnProjectile.ApplyBehaviorToContext", "SpawnedProjectile")
         RemoveHook("WillowGame.Behavior_AIThrowProjectileAtTarget.ApplyBehaviorToContext", "CombatProjectile")
