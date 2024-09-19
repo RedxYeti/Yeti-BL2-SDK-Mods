@@ -1,0 +1,6 @@
+Update1.2: (i forgot to change it in game)
+Fixed some NPC's not randomizing
+Hopefully fixed the save/load system
+
+If you find you're still having issues with save/load system, after closing the game set your save json to read only.
+Then after you've finished prepping the randomizer, load in game, then remove the read only. You can leave it off read only until next game launch.
