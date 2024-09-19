@@ -10,6 +10,7 @@ import unrealsdk #type: ignore
 from Mods import ModMenu #type: ignore
 
 
+
 if Game.GetCurrent() == Game.BL2:
     oidMaxFiringModes = Options.Slider(
         Caption="Max Firing Modes",
@@ -64,19 +65,19 @@ def CreateDictEntry(UniqueID, ItemPart, FiringMode, Projectile, Name):
         ItemInfo = [ItemPart, FiringMode, Projectile, Name]
         ProjRandomInst.ItemInfoDict['UniqueIDs'][UniqueID] = ItemInfo
 
+
 def GameSave(caller: UObject, function: UFunction, params: FStruct):
     if caller.GetCachedSaveGame().SaveGameId == -1:#most likely a new character
         return True
     
+    if ProjRandomInst.GameSaveCalled <= 0:
+        ProjRandomInst.GameSaveCalled += 1
+        return True
+
     if ProjRandomInst.PlayerID != -1 and ProjRandomInst.SavePath is None:
         ProjRandomInst.PlayerID = caller.GetCachedSaveGame().SaveGameId
         ProjRandomInst.SavePath = GetSaveLocation(ProjRandomInst.PlayerID)
-        ProjRandomInst.FirstSave = False
     
-    if ProjRandomInst.FirstSave:#sometimes saved before loading the first time.
-        ProjRandomInst.FirstSave = False
-        return True
-
     save(caller, False)
     return True
 
@@ -211,7 +212,8 @@ def AreaLoaded(caller: UObject, function: UFunction, params: FStruct):
     ProjRandomInst.AIPawnProjectiles = {'AIPawns': {}}
     ProjRandomInst.AIPawnBeams = {'AIPawnBeams': {}}
 
-    if ProjRandomInst.PlayerLoad: PlayerLoad()
+    if ProjRandomInst.PlayerLoad: 
+        PlayerLoad()
         
     for InvItem in PC.GetWillowGlobals().PickupList:
         if InvItem and InvItem.Class.Name in ProjRandomInst.Classnames:
@@ -226,7 +228,7 @@ def CharacterChange(caller: UObject, function: UFunction, params: FStruct):
         ProjRandomInst.SavePath = GetSaveLocation(SaveID)
         ProjRandomInst.LoadFromText = True
         ProjRandomInst.PlayerLoad = True
-        ProjRandomInst.FirstSave = True
+        ProjRandomInst.GameSaveCalled = 0
     return True
 
 def PlayerLoad():
@@ -244,7 +246,6 @@ def PlayerLoad():
 
     if ProjRandomInst.SavePath is None and SaveID != -1:
        ProjRandomInst.SavePath = GetSaveLocation(SaveID)
-
 
     if ProjRandomInst.LoadFromText == True:
         ProjRandomInst.UniqueIDs = []
@@ -323,10 +324,9 @@ def LoadFromDict(item, UniqueID):
             item.InitializeFromDefinitionData(tuple(DefData), None, True)
 
 def SaveQuitItems(caller: UObject, function: UFunction, params: FStruct):
-    if not params.bSkipSave:
-        ProjRandomInst.PlayerLoad = True
-        ProjRandomInst.LoadFromText = True
-        save(caller, True)
+    ProjRandomInst.PlayerLoad = True
+    ProjRandomInst.LoadFromText = True
+    save(caller, True)
     return True
 
 def save(caller, bCleanArray):
@@ -492,8 +492,6 @@ def CombatBeam(caller: UObject, function: UFunction, params: FStruct):
 
 def SpawnedProjectile(caller: UObject, function: UFunction, params: FStruct):
     ClassName = params.ContextObject.Class.Name
-    if ClassName == "WillowAIPawn":
-        return True
     if not ProjRandomInst.IsBL2:
         if ClassName == "OzSupportDrone":
             return True
@@ -654,10 +652,13 @@ def CreateButton(caller: UObject, function: UFunction, params: FStruct):
     if params.Caption == "$WillowMenu.WillowScrollingListDataProviderFrontEnd.Play_Continue":
         if not ProjRandomInst.SeenMaxMessage:
             caller.AddListItem(25371, "PREP PROJECTILE RANDOMIZER", False, False)
+        else:
+            RegisterHook("WillowGame.WillowPlayerController.ReturnToTitleScreen", "SaveQuitItems", SaveQuitItems)
     return True
 
 def ButtonPressed(caller: UObject, function: UFunction, params: FStruct):
     if params.EventID == 25371:
+        RemoveHook("WillowGame.WillowPlayerController.ReturnToTitleScreen", "SaveQuitItems")
         ProjRandomInst.PreppingPackages = True
         params.TheList.MyOwnerMovie.OnClose()
         RegisterHook("WillowGame.WillowPlayerController.PlayerTick", "PlayerTickPackages", PlayerTickPackages)
@@ -775,7 +776,7 @@ class ProjRandom(SDKMod):
     Version = "1.0"
     SaveEnabledState = EnabledSaveType.LoadWithSettings
 
-    Options = [oidMaxFiringModes, oidMaxProjectiles, oidDropWeapons]  
+    Options = [oidMaxFiringModes, oidMaxProjectiles, oidDropWeapons] 
 
     def Enable(self) -> None:
         if Game.GetCurrent() == Game.BL2:
@@ -785,6 +786,7 @@ class ProjRandom(SDKMod):
         self.LoadedMapsPath = None
         self.LastStation = None
 
+        self.GameSaveCalled = 0
         self.PreppingPackages = False
         self.SeenMaxMessage = False
         

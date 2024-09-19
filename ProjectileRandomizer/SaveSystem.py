@@ -11,7 +11,8 @@ def PC() -> UObject:
 
 def ButtonCreated(caller: UObject, function: UFunction, params: FStruct):
     if params.Caption == "$WillowMenu.WillowScrollingListDataProviderFrontEnd.Play_Continue":
-        PC().GFxUIManager.ShowTrainingDialog("Your save json has a broken entry! <br>You need to fix your json before continuing!", "Projectile Randomizer", 5)
+        message = f"Your save json has a broken entry! <br>You need to fix your json before continuing!"
+        PC().GFxUIManager.ShowTrainingDialog(message, "Projectile Randomizer", 5)
         RemoveHook("WillowGame.WillowScrollingList.AddListItem", "ButtonCreated")
     return True
 
@@ -22,10 +23,11 @@ def save_to_json(file_path, unique_ids_data):
         if time.time() - lasttime > 120:
             lasttime = time.time()
             Hud = PC().GetHUDMovie()
-            if Hud:
+            PRI = PC.PlayerReplicationInfo
+            if Hud and PRI:
                 Hud.ClearTrainingText()
                 Message = f"<font size='20'>Your current save json is read only!</font>"
-                Hud.AddTrainingText(Message, "Projectile Randomizer", 5, (), "", False, 0, PC.PlayerReplicationInfo, True)
+                Hud.AddTrainingText(Message, "Projectile Randomizer", 5, (), "", False, 0, PRI, True)
         return
     
     data = {}
