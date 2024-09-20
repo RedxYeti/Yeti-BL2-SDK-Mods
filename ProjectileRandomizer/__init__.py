@@ -65,9 +65,17 @@ def CreateDictEntry(UniqueID, ItemPart, FiringMode, Projectile, Name):
         ItemInfo = [ItemPart, FiringMode, Projectile, Name]
         ProjRandomInst.ItemInfoDict['UniqueIDs'][UniqueID] = ItemInfo
 
+def PlayerTickWaitForSave(caller: UObject, function: UFunction, params: FStruct):
+    if not caller.GetCachedSaveGame().SaveGameId == -1:
+        ProjRandomInst.PlayerID = caller.GetCachedSaveGame().SaveGameId
+        ProjRandomInst.SavePath = GetSaveLocation(ProjRandomInst.PlayerID)
+        RemoveHook("WillowGame.WillowPlayerController.PlayerTick", "PlayerTickWaitForSave")
+    return True
 
 def GameSave(caller: UObject, function: UFunction, params: FStruct):
     if caller.GetCachedSaveGame().SaveGameId == -1:#most likely a new character
+        RegisterHook("WillowGame.WillowPlayerController.PlayerTick", "PlayerTickWaitForSave", PlayerTickWaitForSave)
+        ProjRandomInst.GameSaveCalled += 1
         return True
     
     if ProjRandomInst.GameSaveCalled <= 0:
@@ -204,10 +212,7 @@ def AreaLoaded(caller: UObject, function: UFunction, params: FStruct):
         RegisterHook("WillowGame.WillowPlayerController.PlayerTick", "PlayerTickPackages", PlayerTickPackages)
         ProjRandomInst.AreaLoaded = True
     else:
-        if ProjRandomInst.IsBL2:  
-            PC.ConsoleCommand("obj garbage")
-        else:
-            GetEngine().GetCurrentWorldInfo().ForceGarbageCollection(True)
+        GetEngine().GetCurrentWorldInfo().ForceGarbageCollection()
 
     ProjRandomInst.AIPawnProjectiles = {'AIPawns': {}}
     ProjRandomInst.AIPawnBeams = {'AIPawnBeams': {}}
@@ -773,7 +778,7 @@ class ProjRandom(SDKMod):
     Name = "Projectile Randomizer"
     Description = f"Randomizes Projectiles."
     Author = "RedxYeti"
-    Version = "1.0"
+    Version = "1.2"
     SaveEnabledState = EnabledSaveType.LoadWithSettings
 
     Options = [oidMaxFiringModes, oidMaxProjectiles, oidDropWeapons] 
