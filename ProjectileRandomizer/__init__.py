@@ -75,11 +75,6 @@ def PlayerTickWaitForSave(caller: UObject, function: UFunction, params: FStruct)
 def GameSave(caller: UObject, function: UFunction, params: FStruct):
     if caller.GetCachedSaveGame().SaveGameId == -1:#most likely a new character
         RegisterHook("WillowGame.WillowPlayerController.PlayerTick", "PlayerTickWaitForSave", PlayerTickWaitForSave)
-        ProjRandomInst.GameSaveCalled += 1
-        return True
-    
-    if ProjRandomInst.GameSaveCalled <= 0:
-        ProjRandomInst.GameSaveCalled += 1
         return True
 
     if ProjRandomInst.PlayerID != -1 and ProjRandomInst.SavePath is None:
@@ -233,7 +228,6 @@ def CharacterChange(caller: UObject, function: UFunction, params: FStruct):
         ProjRandomInst.SavePath = GetSaveLocation(SaveID)
         ProjRandomInst.LoadFromText = True
         ProjRandomInst.PlayerLoad = True
-        ProjRandomInst.GameSaveCalled = 0
     return True
 
 def PlayerLoad():
@@ -335,7 +329,7 @@ def SaveQuitItems(caller: UObject, function: UFunction, params: FStruct):
     return True
 
 def save(caller, bCleanArray):
-    if ProjRandomInst.PreppingPackages:
+    if ProjRandomInst.PreppingPackages or ProjRandomInst.LoadFromText:
         return
 
     ItemArray = []
@@ -778,7 +772,7 @@ class ProjRandom(SDKMod):
     Name = "Projectile Randomizer"
     Description = f"Randomizes Projectiles."
     Author = "RedxYeti"
-    Version = "1.2"
+    Version = "1.3"
     SaveEnabledState = EnabledSaveType.LoadWithSettings
 
     Options = [oidMaxFiringModes, oidMaxProjectiles, oidDropWeapons] 
@@ -791,7 +785,6 @@ class ProjRandom(SDKMod):
         self.LoadedMapsPath = None
         self.LastStation = None
 
-        self.GameSaveCalled = 0
         self.PreppingPackages = False
         self.SeenMaxMessage = False
         
