@@ -134,6 +134,33 @@
             "requirements": {}
         },
          {
+            "name": "Quiet Console",
+            "description": [
+                "Disables most things printed to console by Gearbox, leaving a nice clean console for logging.\n",
+                "\n",
+                "Disabled Messages are:\n",
+                "Debug Messages\n",
+                "Item Messages\n",
+                "Weapon Messages\n",
+                "Ammo Messages\n",
+                "Credits Messages\n",
+                "Challenge Messages\n",
+                "Mission Messages\n",
+                "Fast Travel Station Messages\n",
+                "Level Up Messages\n",
+                "Join/Leave Game Messages\n",
+                "Change Name Messages"
+            ],
+            "tagline": "Disables most things printed to console by Gearbox.",
+            "types": ["Utility"],
+            "latest": "1.0",
+            "supports": ["BL2"],
+            "versions": {
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/QuietConsole"
+            },
+            "requirements": {}
+        },
+         {
             "name": "Silly Scales",
             "description": [
                 "Randomizes Players, Enemies and Vehicles scale when they spawn.\n ",
