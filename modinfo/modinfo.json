@@ -154,7 +154,7 @@
             "tagline": "Disables most things printed to console by Gearbox.",
             "types": ["Utility"],
             "latest": "1.0",
-            "supports": ["BL2"],
+            "supports": ["BL2", "TPS"],
             "versions": {
                 "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/QuietConsole"
             },
