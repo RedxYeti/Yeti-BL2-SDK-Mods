@@ -16,7 +16,7 @@
             "latest": "1.0",
             "supports": ["BL2"],
             "versions": {
-                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/ReviveTimeModifier"
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/ReviveTimeModifier/ReviveTimeModifier.zip"
             },
             "requirements": {}
         },
@@ -30,7 +30,7 @@
             "latest": "1.0",
             "supports": ["BL2"],
             "versions": {
-                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/EndActionSkillKey"
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/EndActionSkillKey/EndActionSkillKey.zip"
             },
             "requirements": {}
         },
@@ -86,7 +86,7 @@
             "latest": "1.0",
             "supports": ["BL2", "TPS"],
             "versions": {
-                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/blob/main/ProjectileRandomizer"
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/ProjectileRandomizer/ProjectileRandomizer.zip"
             },
             "requirements": {}
         },
@@ -115,7 +115,7 @@
             "latest": "1.0",
             "supports": ["BL2"],
             "versions": {
-                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/NewWeaponOnKill"
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/NewWeaponOnKill/NewWeaponOnKill.zip"
             },
             "requirements": {}
          },
@@ -153,10 +153,10 @@
             ],
             "tagline": "Disables most things printed to console by Gearbox.",
             "types": ["Utility"],
-            "latest": "1.0",
+            "latest": "1.1",
             "supports": ["BL2", "TPS"],
             "versions": {
-                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/QuietConsole"
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/QuietConsole/QuietConsole.zip"
             },
             "requirements": {}
         },
@@ -178,7 +178,7 @@
             "latest": "1.0",
             "supports": ["BL2"],
             "versions": {
-                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/SillyScales"
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/SillyScales/SillyScales.zip"
             },
             "requirements": {}
         },
@@ -199,7 +199,7 @@
             "latest": "1.0",
             "supports": ["BL2"],
             "versions": {
-                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/AfterburnTweaks"
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/AfterburnTweaks/AfterburnTweaks.zip"
             },
             "requirements": {}
         },
@@ -216,7 +216,7 @@
             "latest": "1.0",
             "supports": ["BL2"],
             "versions": {
-                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/ActionSkillCountdown"
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/ActionSkillCountdown/ActionSkillCountdown.zip"
             },
             "requirements": {}
         },
@@ -235,7 +235,7 @@
             "latest": "1.5",
             "supports": ["BL2"],
             "versions": {
-                "1.5": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/tree/main/UltimateScavengerMod"
+                "1.5": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/UltimateScavengerMod/Ultimate%20Scavenger%20Mod.zip"
             },
             "requirements": {}
         }
