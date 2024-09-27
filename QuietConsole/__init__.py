@@ -1,68 +1,47 @@
-from unrealsdk import RegisterHook, RemoveHook, UObject, UFunction, FStruct #type: ignore
+from unrealsdk import RegisterHook, RemoveHook, UObject, UFunction, FStruct, Log #type: ignore
 from Mods.ModMenu import EnabledSaveType, RegisterMod, SDKMod
 
 
-def QuietConsoleDebug(caller: UObject, function: UFunction, params: FStruct):
-    return False
-
-def QuietConsolePKMI(caller: UObject, function: UFunction, params: FStruct):
-    return False
-
-def QuietConsolePKMW(caller: UObject, function: UFunction, params: FStruct):
-    return False
-
-def QuietConsolePKMA(caller: UObject, function: UFunction, params: FStruct):
-    return False
-
-def QuietConsolePKMC(caller: UObject, function: UFunction, params: FStruct):
-    return False
-
-def QuietConsoleChal(caller: UObject, function: UFunction, params: FStruct):
-    return False
-
-def QuietConsoleMission(caller: UObject, function: UFunction, params: FStruct):
-    return False
-
-def QuietConsoleFT(caller: UObject, function: UFunction, params: FStruct):
-    return False
-
-def QuietConsoleLevelUp(caller: UObject, function: UFunction, params: FStruct):
-    return False
-
-def QuietConsoleGM(caller: UObject, function: UFunction, params: FStruct):
-    return False
+def QuietConsoleOutput(caller: UObject, function: UFunction, params: FStruct):
+    if str(params.Text).startswith("[BEHAVIOR]"):
+        return False
+    else:
+        return True
 
 
 class QuietConsole(SDKMod):
     Name = "Quiet Console"
     Description = f"Disables most things printed to console by Gearbox."
     Author = "RedxYeti"
-    Version = "1.0"
+    Version = "1.1"
     SaveEnabledState = EnabledSaveType.LoadWithSettings
 
     def Enable(self) -> None:
-        RegisterHook("WillowGame.Behavior_DebugMessage.ApplyBehaviorToContext", "QuietConsoleDebug", QuietConsoleDebug)
-        RegisterHook("WillowGame.LocalItemMessage.ClientItemReceive", "ClientItemReceive", QuietConsolePKMI)
-        RegisterHook("WillowGame.LocalWeaponMessage.ClientWeaponReceive", "QuietConsolePKMW", QuietConsolePKMW)
-        RegisterHook("WillowGame.ReceivedAmmoMessage.ClientAmmoReceive", "QuietConsolePKMA", QuietConsolePKMA)
-        RegisterHook("WillowGame.ReceivedCreditsMessage.ClientCreditReceive", "QuietConsolePKMC", QuietConsolePKMC)
-        RegisterHook("WillowGame.ChallengeFeedbackMessage.GetString", "QuietConsoleChal", QuietConsoleChal)
-        RegisterHook("WillowGame.MissionFeedbackMessage.GetString", "QuietConsoleMission", QuietConsoleMission)
-        RegisterHook("WillowGame.FastTravelStationDiscoveryMessage.GetString", "QuietConsoleFT", QuietConsoleFT)
-        RegisterHook("WillowGame.ExperienceFeedbackMessage.GetString", "QuietConsoleLevelUp", QuietConsoleLevelUp)
-        RegisterHook("Engine.GameMessage.GetString", "QuietConsoleGM", QuietConsoleGM)
+        RegisterHook("WillowGame.Behavior_DebugMessage.ApplyBehaviorToContext", "QuietConsoleMain", lambda c,f,p: False)
+        RegisterHook("WillowGame.LocalItemMessage.ClientItemReceive", "QuietConsoleMain", lambda c,f,p: False)
+        RegisterHook("WillowGame.LocalWeaponMessage.ClientWeaponReceive", "QuietConsoleMain", lambda c,f,p: False)
+        RegisterHook("WillowGame.ReceivedAmmoMessage.ClientAmmoReceive", "QuietConsoleMain", lambda c,f,p: False)
+        RegisterHook("WillowGame.ReceivedCreditsMessage.ClientCreditReceive", "QuietConsoleMain", lambda c,f,p: False)
+        RegisterHook("WillowGame.ChallengeFeedbackMessage.GetString", "QuietConsoleMain", lambda c,f,p: False)
+        RegisterHook("WillowGame.MissionFeedbackMessage.GetString", "QuietConsoleMain", lambda c,f,p: False)
+        RegisterHook("WillowGame.FastTravelStationDiscoveryMessage.GetString", "QuietConsoleMain", lambda c,f,p: False)
+        RegisterHook("WillowGame.ExperienceFeedbackMessage.GetString", "QuietConsoleMain", lambda c,f,p: False)
+        RegisterHook("Engine.GameMessage.GetString", "QuietConsoleMain", lambda c,f,p: False)
+        RegisterHook("Engine.Console.OutputText", "QuietConsoleOutput", QuietConsoleOutput)
+
 
     def Disable(self) -> None:
-        RemoveHook("WillowGame.Behavior_DebugMessage.ApplyBehaviorToContext", "QuietConsoleDebug")
-        RemoveHook("WillowGame.LocalItemMessage.ClientItemReceive", "ClientItemReceive")
-        RemoveHook("WillowGame.LocalWeaponMessage.ClientWeaponReceive", "QuietConsolePKMW")
-        RemoveHook("WillowGame.ReceivedAmmoMessage.ClientAmmoReceive", "QuietConsolePKMA")
-        RemoveHook("WillowGame.ReceivedCreditsMessage.ClientCreditReceive", "QuietConsolePKMC")
-        RemoveHook("WillowGame.ChallengeFeedbackMessage.GetString", "QuietConsoleChal")
-        RemoveHook("WillowGame.MissionFeedbackMessage.GetString", "QuietConsoleMission")
-        RemoveHook("WillowGame.FastTravelStationDiscoveryMessage.GetString", "QuietConsoleFT")
-        RemoveHook("WillowGame.ExperienceFeedbackMessage.GetString", "QuietConsoleLevelUp")
-        RemoveHook("Engine.GameMessage.GetString", "QuietConsoleGM")
+        RemoveHook("WillowGame.Behavior_DebugMessage.ApplyBehaviorToContext", "QuietConsoleMain")
+        RemoveHook("WillowGame.LocalItemMessage.ClientItemReceive", "QuietConsoleMain")
+        RemoveHook("WillowGame.LocalWeaponMessage.ClientWeaponReceive", "QuietConsoleMain")
+        RemoveHook("WillowGame.ReceivedAmmoMessage.ClientAmmoReceive", "QuietConsoleMain")
+        RemoveHook("WillowGame.ReceivedCreditsMessage.ClientCreditReceive", "QuietConsoleMain")
+        RemoveHook("WillowGame.ChallengeFeedbackMessage.GetString", "QuietConsoleMain")
+        RemoveHook("WillowGame.MissionFeedbackMessage.GetString", "QuietConsoleMain")
+        RemoveHook("WillowGame.FastTravelStationDiscoveryMessage.GetString", "QuietConsoleMain")
+        RemoveHook("WillowGame.ExperienceFeedbackMessage.GetString", "QuietConsoleMain")
+        RemoveHook("Engine.GameMessage.GetString", "QuietConsoleMain")
+        RemoveHook("Engine.Console.OutputText", "QuietConsoleOutput")
 
 QC = QuietConsole()
 RegisterMod(QuietConsole())
