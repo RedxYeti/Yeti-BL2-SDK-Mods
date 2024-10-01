@@ -16,18 +16,23 @@ def ButtonCreated(caller: UObject, function: UFunction, params: FStruct):
         RemoveHook("WillowGame.WillowScrollingList.AddListItem", "ButtonCreated")
     return True
 
+def HudLoaded(caller: UObject, function: UFunction, params: FStruct):
+    RemoveHook("WillowGame.WillowHUDGFxMovie.Start", "HudLoaded")
+    Hud = PC().GetHUDMovie()
+    PRI = GetEngine().GamePlayers[0].Actor.PlayerReplicationInfo
+    if Hud and PRI:
+        Hud.ClearTrainingText()
+        Message = f"<font size='20'>Your current save json is read only!</font>"
+        Hud.AddTrainingText(Message, "Projectile Randomizer", 5, (), "", False, 0, PRI, True)
+    return True
+
 def save_to_json(file_path, unique_ids_data):
     global lasttime
     if os.path.exists(file_path) and not os.access(file_path, os.W_OK):
         #read only
-        if time.time() - lasttime > 120:
+        if time.time() - lasttime > 60:
             lasttime = time.time()
-            Hud = PC().GetHUDMovie()
-            PRI = PC.PlayerReplicationInfo
-            if Hud and PRI:
-                Hud.ClearTrainingText()
-                Message = f"<font size='20'>Your current save json is read only!</font>"
-                Hud.AddTrainingText(Message, "Projectile Randomizer", 5, (), "", False, 0, PRI, True)
+            RegisterHook("WillowGame.WillowHUDGFxMovie.Start", "HudLoaded", HudLoaded)
         return
     
     data = {}

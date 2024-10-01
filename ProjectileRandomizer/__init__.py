@@ -1,5 +1,5 @@
 from unrealsdk import Log, GetEngine, UObject, FindAll, FindObject, ConstructObject, FindClass #type: ignore
-from unrealsdk import KeepAlive, FStruct, UFunction, RegisterHook, RemoveHook, LoadPackage #type: ignore
+from unrealsdk import KeepAlive, FStruct, UFunction, RegisterHook, RemoveHook, LoadPackage, DoInjectedCallNext #type: ignore
 from Mods.ModMenu import EnabledSaveType, Options, RegisterMod, SDKMod, Game, Hook #type: ignore
 from random import choice, uniform, randint
 from typing import Any, Iterator, List, Optional
@@ -510,6 +510,23 @@ def SpawnedProjectile(caller: UObject, function: UFunction, params: FStruct):
             caller.ProjectileDefinition = ProjRandomInst.GetProjectile()[1]
     return True
 
+
+def SpawnActor(caller: UObject, function: UFunction, params: FStruct):
+    SpawnerPawn = None
+    pawn = GetEngine().GetCurrentWorldInfo().PawnList
+    while pawn is not None:
+        if pawn.AIClass is not None:
+            SpawnerPawn = pawn
+            break
+        pawn = pawn.NextPawn
+
+    if SpawnerPawn and params.ContextObject == GetEngine().GamePlayers[0].Actor.pawn:
+        DoInjectedCallNext()
+        caller.SpawnActor(SpawnerPawn, params.EffectivePopDef, params.SpawnLocationContext)
+        return False
+    return True
+
+
 def UpdateProjectile(Projectile):#basically just turns certain projectiles into grenade flight path
     if Projectile.SpeedFormula.BaseValueConstant == 0.0:
         Projectile.GravityScaling = 0.8
@@ -772,7 +789,7 @@ class ProjRandom(SDKMod):
     Name = "Projectile Randomizer"
     Description = f"Randomizes Projectiles."
     Author = "RedxYeti"
-    Version = "1.3"
+    Version = "1.4"
     SaveEnabledState = EnabledSaveType.LoadWithSettings
 
     Options = [oidMaxFiringModes, oidMaxProjectiles, oidDropWeapons] 
@@ -849,7 +866,8 @@ class ProjRandom(SDKMod):
         RegisterHook("WillowGame.VendingMachineExGFxMovie.Start", "VendorUsed", VendorUsed)
         RegisterHook("WillowGame.WillowScrollingList.AddListItem", "CreateButton", CreateButton)
         RegisterHook("WillowGame.WillowScrollingListDataProviderFrontEnd.HandleClick", "ButtonPressed", ButtonPressed)
-        
+        RegisterHook("WillowGame.Behavior_AISpawn.SpawnActor", "SpawnActor", SpawnActor)
+
         if GetEngine().GamePlayers[0].Actor.GetFrontEndMovie():
             GetEngine().GamePlayers[0].Actor.GetFrontEndMovie().TheList.Refresh()
 
@@ -874,6 +892,7 @@ class ProjRandom(SDKMod):
         RemoveHook("WillowGame.WillowScrollingListDataProviderFrontEnd.HandleClick", "ButtonPressed")
         RemoveHook("WillowGame.TravelStation.PostBeginPlay", "BlockStation")
         RemoveHook("WillowGame.WillowPlayerController.PlayerTick", "PlayerTickPackages")
+        RemoveHook("WillowGame.Behavior_AISpawn.SpawnActor", "SpawnActor")
 
         if GetEngine().GamePlayers[0].Actor.GetFrontEndMovie():
             GetEngine().GamePlayers[0].Actor.GetFrontEndMovie().TheList.Refresh()
