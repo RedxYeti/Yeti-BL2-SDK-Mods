@@ -83,10 +83,10 @@
             ],
             "tagline": "Randomizes Projectiles on weapons and grenades.",
             "types": ["Gameplay"],
-            "latest": "1.0",
+            "latest": "1.4",
             "supports": ["BL2", "TPS"],
             "versions": {
-                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/ProjectileRandomizer/ProjectileRandomizer.zip"
+                "1.4": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/ProjectileRandomizer/ProjectileRandomizer.zip"
             },
             "requirements": {}
         },
