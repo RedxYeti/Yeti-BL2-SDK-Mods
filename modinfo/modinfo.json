@@ -35,6 +35,20 @@
             "requirements": {}
         },
         {
+            "name": "Loot Collision",
+            "description": [
+                "Disables loot collision with dead bodies and other loot. No more loot going to outer space (or further)."
+            ],
+            "tagline": "Disables loot collision with dead bodies and other loot.",
+            "types": ["Utility", "Gameplay"],
+            "latest": "1.0",
+            "supports": ["BL2", "TPS"],
+            "versions": {
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/LootCollision/LootCollision.zip"
+            },
+            "requirements": {}
+        },
+        {
             "name": "Projectile Randomizer",
             "description": [
                 "****WARNING: THIS MOD CAN HAVE LOTS OF FLASHING LIGHTS AND OFTEN IS VERY LOUD****\n",
