@@ -13,7 +13,7 @@ def EnableRagdoll(caller: UObject, function: UFunction, params: FStruct):
 
 class LootCollision(SDKMod):
     Name = "Loot Collision"
-    Description = f"Choose if loot collides with dead bodies or other loot."
+    Description = f"Disables loot collision with dead bodies and other loot."
     Author = "RedxYeti"
     Version = "1.0"
     SaveEnabledState = EnabledSaveType.LoadWithSettings
