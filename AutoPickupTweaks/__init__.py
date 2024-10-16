@@ -122,12 +122,9 @@ oidMainNest = Options.Nested (
 
 def SetAutoPickup(Pickupable, bAuto):
     if Pickupable:
-        Log(f"setting {str(Pickupable).split(' ')[1]} to {bAuto}")
+        #Log(f"setting {str(Pickupable).split(' ')[1]} to {bAuto}")
         Pickupable.bAutomaticallyPickup = bAuto
     return
-
-def dist(a, b) -> float:
-    return sqrt((b.X - a.X)**2 + (b.Y - a.Y)**2 + (b.Z - a.Z)**2)
 
 def InteractParticles(caller: UObject, function: UFunction, params: FStruct):
     if not oidChests.CurrentValue or not caller.Base or caller.Base.Class.Name != "WillowInteractiveObject":
