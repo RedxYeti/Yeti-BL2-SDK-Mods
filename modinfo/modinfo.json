@@ -49,6 +49,20 @@
             "requirements": {}
         },
         {
+            "name": "Auto Pickup Tweaks",
+            "description": [
+                "This mod will let you choose what gets picked up from health vials to eridium to ammo. It will also pickup items from chests."
+            ],
+            "tagline": "Choose exactly what gets automatically picked up.",
+            "types": ["Utility", "Gameplay"],
+            "latest": "1.0",
+            "supports": ["BL2", "TPS"],
+            "versions": {
+                "1.0": "https://github.com/RedxYeti/Yeti-BL2-SDK-Mods/raw/refs/heads/main/AutoPickupTweaks/AutoPickupTweaks.zip"
+            },
+            "requirements": {}
+        },
+        {
             "name": "Projectile Randomizer",
             "description": [
                 "****WARNING: THIS MOD CAN HAVE LOTS OF FLASHING LIGHTS AND OFTEN IS VERY LOUD****\n",
