@@ -51,7 +51,8 @@
         {
             "name": "Auto Pickup Tweaks",
             "description": [
-                "This mod will let you choose what gets picked up from health vials to eridium to ammo. It will also pickup items from chests."
+                "This mod will let you choose what gets picked up from health vials to eridium to ammo. It will also pickup items from chests.\n",
+                "coop, shield boosters"                
             ],
             "tagline": "Choose exactly what gets automatically picked up.",
             "types": ["Utility", "Gameplay"],
