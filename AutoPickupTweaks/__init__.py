@@ -1,5 +1,5 @@
 from unrealsdk import RegisterHook, RemoveHook, UObject, UFunction, FStruct,Log #type: ignore
-from unrealsdk import FindObject, KeepAlive, LoadPackage, ConstructObject #type: ignore
+from unrealsdk import FindClass, FindObject, KeepAlive, LoadPackage, ConstructObject #type: ignore
 from Mods.ModMenu import EnabledSaveType, RegisterMod, SDKMod, OptionManager, Options#type: ignore
 from typing import Any
 from math import sqrt
@@ -8,10 +8,34 @@ from Mods import ModMenu#type: ignore
 
 ItemDictionary = {}
 
+oidPickupRadius = Options.Slider(
+    Caption="Pickup Radius",
+    Description="The horizontal distance for items to be automatically picked up. Default is 350.",
+    StartingValue=350,
+    MinValue=100,
+    MaxValue=1000,
+    Increment=50,
+)
+
+oidPickupHeight = Options.Slider(
+    Caption="Pickup Height",
+    Description="The verticle distance for items to be automatically picked up. Default is 20.",
+    StartingValue=100,
+    MinValue=20,
+    MaxValue=350,
+    Increment=10,
+)
+
 oidChests = Options.Boolean(
     Caption="Chest Items",
     Description="With this enabled, enabled options will be automatically picked up from chests.",
     StartingValue=True,
+)
+
+oidChestsAfterAnimation = Options.Boolean(
+    Caption="   After Animation",
+    Description="With this and Chest Items enabled, enabled options will only be picked up once the opening animation has finished. Requires mod to be re-enabled.",
+    StartingValue=False,
 )
 
 oidHealthVials = Options.Boolean(
@@ -115,8 +139,9 @@ oidAmmoNest = Options.Nested (
 oidMainNest = Options.Nested (
     Caption = "Auto Pickup Tweaks Options",
     Description = "All the settings for Auto Pickup Tweaks",
-    Children = [oidChests, oidHealthVials, oidShieldBoosters, oidMoney, oidEridium,
-                oidSeraphCrystal, oidTorgueToken , oidMoonstones, oidAmmoNest],
+    Children = [oidPickupRadius, oidPickupHeight, oidChests, oidChestsAfterAnimation,
+                oidHealthVials, oidShieldBoosters, oidMoney, oidEridium, oidSeraphCrystal,
+                oidTorgueToken, oidMoonstones, oidAmmoNest],
     IsHidden = False
 )
 
@@ -126,6 +151,12 @@ def SetAutoPickup(Pickupable, bAuto):
         Pickupable.bAutomaticallyPickup = bAuto
     return
 
+def Distance(a, b) -> float:
+    return sqrt((b.X - a.X)**2 + (b.Y - a.Y)**2 + (b.Z - a.Z)**2)
+
+def ClientDisplayPickupFailedMessage(caller: unrealsdk.UObject, function: unrealsdk.UFunction, params: unrealsdk.FStruct) -> bool:
+    return not APT.BlockFailedMessage
+
 def InteractParticles(caller: UObject, function: UFunction, params: FStruct):
     if not oidChests.CurrentValue or not caller.Base or caller.Base.Class.Name != "WillowInteractiveObject":
         return True
@@ -134,17 +165,78 @@ def InteractParticles(caller: UObject, function: UFunction, params: FStruct):
         BaseIO = caller.Base.ConsumerHandle.PID
         if caller.Base.InteractiveObjectDefinition.Name == "InteractiveObj_MilitaryCrate":
             caller.AdjustPickupPhysicsAndCollisionForBeingDropped()
-
+        
         if BaseIO in APT.InteractiveObjects.keys() and APT.InteractiveObjects[BaseIO] and caller.bPickupable:
+            # Pickup but flag to prevent FULL icon if it occurs
+            APT.BlockFailedMessage = True
             APT.InteractiveObjects[BaseIO][0].TouchedPickupable(caller)
             APT.InteractiveObjects[BaseIO][0].CurrentPickupable = None
             APT.InteractiveObjects[BaseIO][0].CurrentTouchedPickupable = None
+            APT.BlockFailedMessage = False
 
     return True
 
 def UsedBy(caller: UObject, function: UFunction, params: FStruct):
-    APT.InteractiveObjects[caller.ConsumerHandle.PID] = [params.User.Controller]
+    # Check PlayerInteractionDistance 350 plus a bit for auto pickup on open
+    if Distance(params.User.Location, caller.Location) <= 400:
+        APT.InteractiveObjects[caller.ConsumerHandle.PID] = [params.User.Controller]
+    else:
+        # Set None for us the check the opened IO but not link to a PC for initial open
+        APT.InteractiveObjects[caller.ConsumerHandle.PID] = None
     return True
+
+def ChangeRemoteBehaviorSequenceState(caller: unrealsdk.UObject, function: unrealsdk.UFunction, params: unrealsdk.FStruct) -> bool:
+    if caller.SequenceName == "Opened":
+        IO = params.ContextObject
+        if IO.Class.Name == "WillowInteractiveObject":
+            if oidChestsAfterAnimation.CurrentValue:
+                for p in IO.Attached:
+                    InteractParticles(p, None, None)
+            # Set free for anyone to pickup now that it's fully opened and the opener has picked up any
+            APT.InteractiveObjects[IO.ConsumerHandle.PID] = None
+    return True
+
+def HandlePickupQuery(caller: unrealsdk.UObject, function: unrealsdk.UFunction, params: unrealsdk.FStruct) -> bool:
+    """ Items attached to chests don't seem to fire the touched events, just SawPickupable and this one.
+     WillowPlayerController.SawPickupable triggers when the interaction prompt appear for a pickup.
+     This function triggers whenever you look at a pickup, allowing us to use a custom pickup distance.
+    """
+    Pickup = caller.Base
+    if Pickup.Class.Name == "WillowPickup" and params.Other.Class.Name == "WillowPlayerPawn":
+        if Pickup.Base:
+            BaseIO = Pickup.Base.ConsumerHandle.PID
+            # Only if NO player has dibsed this - so an already opened chest
+            if BaseIO in APT.InteractiveObjects.keys() and not APT.InteractiveObjects[BaseIO] and Pickup.bPickupable:
+                if Distance(params.Other.Location, caller.Location) <= oidPickupRadius.CurrentValue:
+                    APT.InteractiveObjects[BaseIO] = [params.Other.Controller]
+                    for p in Pickup.Base.Attached:
+                        InteractParticles(p, None, None)
+                    APT.InteractiveObjects[BaseIO] = None
+    return True
+
+# def SawPickupable(caller: unrealsdk.UObject, function: unrealsdk.UFunction, params: unrealsdk.FStruct) -> bool:
+#     Log(f"SawPickupable {caller} {params}")
+#     if not params.Pickup or not params.Pickup.ObjectPointer:
+#          return True
+#     Pickup = params.Pickup.ObjectPointer
+#     if Pickup.Base:
+#         BaseIO = Pickup.Base.ConsumerHandle.PID
+#         # Only if NO player has dibsed this - so an already opened chest
+#         if BaseIO in APT.InteractiveObjects.keys() and not APT.InteractiveObjects[BaseIO] and Pickup.bPickupable:
+#             if Distance(Pickup.Location, caller.Pawn.Location) <= oidPickupDistance.CurrentValue:
+#                 APT.InteractiveObjects[BaseIO] = [caller]
+#                 for p in Pickup.Base.Attached:
+#                     InteractParticles(p, None, None)
+#                 APT.InteractiveObjects[BaseIO] = None
+#     return True
+
+def UpdateTouchRadius(caller: UObject, function: UFunction, params: FStruct):
+    """ PlayerInteractionDistance affects both Pickups and InteractiveObjects,
+     so we change it when setting a Pickups radius then change it back.
+    """
+    unrealsdk.DoInjectedCallNext()
+    caller.CollisionComponent.SetCylinderSize(oidPickupRadius.CurrentValue, oidPickupHeight.CurrentValue)
+    return False
 
 def DisableLoadingMovie(caller: UObject, function: UFunction, params: FStruct):
     APT.InteractiveObjects = {}
@@ -196,13 +288,14 @@ class AutoPickupTweaks(SDKMod):
     Name = "Auto Pickup Tweaks"
     Description = f"Choose what picks up automatically"
     Author = "RedxYeti"
-    Version = "1.0"
+    Version = "1.1"
     SaveEnabledState = EnabledSaveType.LoadWithSettings
 
     Options = [oidMainNest]
     ShieldNames = ["Shield Booster", "IED Booster", "Slammer", "Big Boom Blaster Booster"]
     LastUser = None
     InteractiveObjects = {}
+    BlockFailedMessage = False
 
     def __init__(self) -> None:
         self.HealthVialRegen = FindObject('UsableItemDefinition','GD_BuffDrinks.A_Item.BuffDrink_HealingRegen')
@@ -247,19 +340,33 @@ class AutoPickupTweaks(SDKMod):
 
         self.SniperBullets = FindObject('UsableItemDefinition', 'GD_Ammodrops.Pickups.AmmoDrop_Sniper_Rifle_Cartridges')
 
+    def EnableOnParticlesOrAfterAnimation(self) -> None:
+        if oidChestsAfterAnimation.CurrentValue:
+            RemoveHook("WillowGame.WillowPickup.SetInteractParticles", "InteractParticles")
+        else:
+            RegisterHook("WillowGame.WillowPickup.SetInteractParticles", "InteractParticles", InteractParticles)
+
     def Enable(self) -> None:
         RegisterHook("WillowGame.WillowPlayerController.TouchedPickupable", "TouchedPickup", TouchedPickup)
         RegisterHook("WillowGame.WillowInteractiveObject.UsedBy", "UsedBy", UsedBy)
-        RegisterHook("WillowGame.WillowPickup.SetInteractParticles", "InteractParticles", InteractParticles)
+        RegisterHook("WillowGame.WillowUsableItem.HandlePickupQuery", "HandlePickupQuery", HandlePickupQuery)
         RegisterHook("WillowGame.WillowScrollingList.AddListItem", "CreateButton", CreateButton)
         RegisterHook("WillowGame.WillowPlayerController.WillowClientDisableLoadingMovie", "DisableLoadingMovie", DisableLoadingMovie)
+        RegisterHook("WillowGame.WillowPickup.UpdateTouchRadiusForAutomaticallyPickedUpInventory", "UpdateTouchRadius", UpdateTouchRadius)
+        RegisterHook("WillowGame.WillowPlayerController.ClientDisplayPickupFailedMessage", "ClientDisplayPickupFailedMessage", ClientDisplayPickupFailedMessage)
+        RegisterHook("GearboxFramework.Behavior_ChangeRemoteBehaviorSequenceState.ApplyBehaviorToContext", "ChangeRemoteBehaviorSequenceState", ChangeRemoteBehaviorSequenceState)
+        self.EnableOnParticlesOrAfterAnimation()
 
     def Disable(self) -> None:
         RemoveHook("WillowGame.WillowPlayerController.TouchedPickupable", "TouchedPickup")
         RemoveHook("WillowGame.WillowInteractiveObject.UsedBy", "UsedBy")
+        RemoveHook("WillowGame.WillowUsableItem.HandlePickupQuery", "HandlePickupQuery",)
         RemoveHook("WillowGame.WillowPickup.SetInteractParticles", "InteractParticles")
         RemoveHook("WillowGame.WillowScrollingList.AddListItem", "CreateButton")
         RemoveHook("WillowGame.WillowPlayerController.WillowClientDisableLoadingMovie", "DisableLoadingMovie")
+        RemoveHook("WillowGame.WillowPickup.UpdateTouchRadiusForAutomaticallyPickedUpInventory", "UpdateTouchRadius")
+        RemoveHook("WillowGame.WillowPlayerController.ClientDisplayPickupFailedMessage", "ClientDisplayPickupFailedMessage")
+        RemoveHook("GearboxFramework.Behavior_ChangeRemoteBehaviorSequenceState.ApplyBehaviorToContext", "ChangeRemoteBehaviorSequenceState")
 
         #for key in ItemDictionary.keys():
         #    for item in self.ItemDictionary[key]:
