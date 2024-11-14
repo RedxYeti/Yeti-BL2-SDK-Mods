@@ -1,5 +1,5 @@
 from unrealsdk import RegisterHook, RemoveHook, UObject, UFunction, FStruct,Log #type: ignore
-from unrealsdk import FindClass, FindObject, KeepAlive, LoadPackage, ConstructObject #type: ignore
+from unrealsdk import FindObject, KeepAlive, LoadPackage, ConstructObject #type: ignore
 from Mods.ModMenu import EnabledSaveType, RegisterMod, SDKMod, OptionManager, Options#type: ignore
 from typing import Any
 from math import sqrt
@@ -214,26 +214,25 @@ def HandlePickupQuery(caller: unrealsdk.UObject, function: unrealsdk.UFunction, 
                     APT.InteractiveObjects[BaseIO] = None
     return True
 
-# def SawPickupable(caller: unrealsdk.UObject, function: unrealsdk.UFunction, params: unrealsdk.FStruct) -> bool:
-#     Log(f"SawPickupable {caller} {params}")
-#     if not params.Pickup or not params.Pickup.ObjectPointer:
-#          return True
-#     Pickup = params.Pickup.ObjectPointer
-#     if Pickup.Base:
-#         BaseIO = Pickup.Base.ConsumerHandle.PID
-#         # Only if NO player has dibsed this - so an already opened chest
-#         if BaseIO in APT.InteractiveObjects.keys() and not APT.InteractiveObjects[BaseIO] and Pickup.bPickupable:
-#             if Distance(Pickup.Location, caller.Pawn.Location) <= oidPickupDistance.CurrentValue:
-#                 APT.InteractiveObjects[BaseIO] = [caller]
-#                 for p in Pickup.Base.Attached:
-#                     InteractParticles(p, None, None)
-#                 APT.InteractiveObjects[BaseIO] = None
-#     return True
+def SawPickupable(caller: unrealsdk.UObject, function: unrealsdk.UFunction, params: unrealsdk.FStruct) -> bool:
+    if not params.Pickup or not params.Pickup.ObjectPointer:
+        return True
+    Pickup = params.Pickup.ObjectPointer
+    if Pickup.Base:
+        BaseIO = Pickup.Base.ConsumerHandle.PID
+        # Only if NO player has dibsed this - so an already opened chest
+        if BaseIO in APT.InteractiveObjects.keys() and not APT.InteractiveObjects[BaseIO] and Pickup.bPickupable:
+            if Distance(Pickup.Location, caller.Pawn.Location) <= 400:
+                APT.InteractiveObjects[BaseIO] = [caller]
+                for p in Pickup.Base.Attached:
+                    InteractParticles(p, None, None)
+                APT.InteractiveObjects[BaseIO] = None
+    return True
 
 def UpdateTouchRadius(caller: UObject, function: UFunction, params: FStruct):
-    """ PlayerInteractionDistance affects both Pickups and InteractiveObjects,
-     so we change it when setting a Pickups radius then change it back.
-    """
+    if caller.Inventory.Class.Name != "WillowUsableItem":
+        # Don't affect interaction radius of equippable items
+        return True
     unrealsdk.DoInjectedCallNext()
     caller.CollisionComponent.SetCylinderSize(oidPickupRadius.CurrentValue, oidPickupHeight.CurrentValue)
     return False
@@ -348,6 +347,7 @@ class AutoPickupTweaks(SDKMod):
 
     def Enable(self) -> None:
         RegisterHook("WillowGame.WillowPlayerController.TouchedPickupable", "TouchedPickup", TouchedPickup)
+        RegisterHook("WillowGame.WillowPlayerController.SawPickupable", "SawPickupable", SawPickupable)
         RegisterHook("WillowGame.WillowInteractiveObject.UsedBy", "UsedBy", UsedBy)
         RegisterHook("WillowGame.WillowUsableItem.HandlePickupQuery", "HandlePickupQuery", HandlePickupQuery)
         RegisterHook("WillowGame.WillowScrollingList.AddListItem", "CreateButton", CreateButton)
@@ -359,6 +359,7 @@ class AutoPickupTweaks(SDKMod):
 
     def Disable(self) -> None:
         RemoveHook("WillowGame.WillowPlayerController.TouchedPickupable", "TouchedPickup")
+        RemoveHook("WillowGame.WillowPlayerController.SawPickupable", "SawPickupable")
         RemoveHook("WillowGame.WillowInteractiveObject.UsedBy", "UsedBy")
         RemoveHook("WillowGame.WillowUsableItem.HandlePickupQuery", "HandlePickupQuery",)
         RemoveHook("WillowGame.WillowPickup.SetInteractParticles", "InteractParticles")
