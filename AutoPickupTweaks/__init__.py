@@ -178,7 +178,7 @@ def InteractParticles(caller: UObject, function: UFunction, params: FStruct):
 
 def UsedBy(caller: UObject, function: UFunction, params: FStruct):
     # Check PlayerInteractionDistance 350 plus a bit for auto pickup on open
-    if Distance(params.User.Location, caller.Location) <= 400:
+    if params.User and Distance(params.User.Location, caller.Location) <= 400:
         APT.InteractiveObjects[caller.ConsumerHandle.PID] = [params.User.Controller]
     else:
         # Set None for us the check the opened IO but not link to a PC for initial open
@@ -203,7 +203,7 @@ def HandlePickupQuery(caller: unrealsdk.UObject, function: unrealsdk.UFunction, 
     """
     Pickup = caller.Base
     if Pickup.Class.Name == "WillowPickup" and params.Other.Class.Name == "WillowPlayerPawn":
-        if Pickup.Base:
+        if Pickup.Base and Pickup.Base.ConsumerHandle:
             BaseIO = Pickup.Base.ConsumerHandle.PID
             # Only if NO player has dibsed this - so an already opened chest
             if BaseIO in APT.InteractiveObjects.keys() and not APT.InteractiveObjects[BaseIO] and Pickup.bPickupable:
@@ -218,7 +218,7 @@ def SawPickupable(caller: unrealsdk.UObject, function: unrealsdk.UFunction, para
     if not params.Pickup or not params.Pickup.ObjectPointer:
         return True
     Pickup = params.Pickup.ObjectPointer
-    if Pickup.Base:
+    if Pickup.Base and Pickup.Base.ConsumerHandle:
         BaseIO = Pickup.Base.ConsumerHandle.PID
         # Only if NO player has dibsed this - so an already opened chest
         if BaseIO in APT.InteractiveObjects.keys() and not APT.InteractiveObjects[BaseIO] and Pickup.bPickupable:
