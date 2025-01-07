@@ -1,6 +1,10 @@
-For BL2, TPS is untested.
-
 This mod will let you use your movement keys (in my case WASD) to control a bunch of menus. It also enables your Use key (in my case E) to select items in menus. The mod will automatically adjust to your keys.
+
+Update 0.7:
+Added the Stash Menus
+Added a Quick Respec by hitting you reload key in the New U Menu
+Added pressing you Status Menu (in my case Tab) to close the fast travel, vending machines, stash, and mission accept menus
+
 
 Current Working Menus:
 Status Menus (Backpack, Missions, etc)
@@ -9,19 +13,20 @@ Vending Machines
 Quest/Rewards
 Dialog Boxes, like the quit out screen
 Vehicle station, but only left and right on the first screen
+Stash Menus
+
 
 Secondary Features:
 You can hit your reload key on your weapons and gear to cycle if an item is favorited or trash
 The main menu and pause menu now wrap, allowing you to quickly go to the top or bottom of the list
 Alt Use to quick buy in vendors (including vendors like Earl)
 Equipping gear from your backpack will no longer ask where you want to equip it
+Quick Respec by hitting you reload key in the New U Menu
+
 
 Planned Menus:
-New U Menus
-Storage menus
+None
 
-This mod is currently using the old version of the sdk, but it will work on the new version. Versions after this beta will most likely only be supported in the new sdk.
+This mod is currently using the old version of the sdk, but it will work on the new version.
 
-If you are using the new version install the folder to SteamLibrary\steamapps\common\Borderlands 2\sdk_mods\ and where you'll see your other legacy mods.
-
-I'll open a mod feedback if you have any issues or menus to suggest.
+If you are using the new version install the folder to SteamLibrary\steamapps\common\Borderlands 2\sdk_mods\ and where youll see your other legacy mods.
