@@ -47,20 +47,53 @@ class BetterUIControls(ModMenu.SDKMod):
             caller.ParentMovie.RefreshInventoryScreen(True)
             caller.BackpackPanel.RestoreState()
             return False
-        return True
+        return True    
     
+
+    @ModMenu.Hook("WillowGame.CustomizationGFxMovie.MainInputKey")
+    def CustomizationGFxMovie(self, caller: unrealsdk.UObject, function: unrealsdk.UFunction, params: unrealsdk.FStruct) -> bool:    
+        if params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("Reload") and params.uevent == 1:
+            PC = caller.WPCOwner
+            if PC.GetSkillTreeResetCost() <= PC.PlayerReplicationInfo.GetCurrencyOnHand(0):
+                PC.ServerPurchaseSkillTreeReset()
+                MovieSounds = unrealsdk.find_class('WillowGFxMovie').ClassDefaultObject.LookupFallbackAkEventFromGlobalsDefinition('ChaChing')
+                if MovieSounds:
+                    caller.PlayUIAkEvent(MovieSounds)
+                
+                caller.BeginClosing()
+        return True
+
+                
+    @ModMenu.Hook("WillowGame.CustomizationGFxMovie.SetTooltips")
+    def SetTooltips(self, caller: unrealsdk.UObject, function: unrealsdk.UFunction, params: unrealsdk.FStruct) -> bool:    
+        VariableObject = caller.GetVariableObject(caller.TooltipsPath)
+        if VariableObject:
+            if caller.bSelectingFromList:
+                return True
+            else:
+                PC = caller.WPCOwner
+                Cost = PC.GetSkillTreeResetCost()
+                if Cost <= PC.PlayerReplicationInfo.GetCurrencyOnHand(0):
+                    LocalizedString = caller.ResolveDataStoreMarkup(caller.Localize("CharacterCustomization", "Tooltips", "WillowMenu"))
+                    String = f"{LocalizedString}   {self.GetRespecTip(PC, Cost)}"
+                    VariableObject.SetString("htmlText", String)
+                    return False
+        return True
+
 
     @ModMenu.Hook("WillowGame.VendingMachineExGFxMovie.MainInputKey")
     def VendingMachineExGFxMovie(self, caller: unrealsdk.UObject, function: unrealsdk.UFunction, params: unrealsdk.FStruct) -> bool:    
         Key = self.GetMovementKey(params.ukey, caller.WPCOwner)
         if Key:
             self.GlobalHandleInput(caller.MainInputKey, caller.GetControllerID(), Key, params.uevent)
-            return True
         
-        if params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("UseSecondary"):
+        elif params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("UseSecondary"):
             caller.MainInputKey(caller.GetControllerID(), "Enter", params.uevent)
 
-        elif params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("Reload") and params.uevent == 0:
+        elif params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("StatusMenu"):
+            caller.TwoPanelInterface.NormalInputKey(caller.GetControllerID(), "Escape", 0)
+
+        elif params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("Reload") and params.uevent == 0 and not caller.TwoPanelInterface.bOnLeftPanel:
             Thing = caller.TwoPanelInterface.GetSelectedThing()
             if Thing:
                 self.CycleMark(caller, Thing, False)
@@ -126,7 +159,10 @@ class BetterUIControls(ModMenu.SDKMod):
 
             elif params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("Use"):
                     caller.extActivate(caller.PreviousSelectionIndex)
-        
+            
+            elif params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("StatusMenu"):
+                caller.HandleInputKey(caller.GetControllerID(), "Escape", 1)
+
         return True
     
 
@@ -165,6 +201,37 @@ class BetterUIControls(ModMenu.SDKMod):
 
             if params.ukey == "Down" and ListIndex == len(caller.TheList.IndexToEventId) - 1:
                 self.IndexTracker = [0, True]
+        return True
+    
+
+    @ModMenu.Hook("WillowGame.TwoPanelInterfaceGFxObject.PanelInputKey")
+    def TwoPanelInterfaceGFxObject(self, caller: unrealsdk.UObject, function: unrealsdk.UFunction, params: unrealsdk.FStruct) -> bool:
+        if caller.ParentMovie.Class.Name == "VendingMachineExGFxMovie":
+            return True
+        
+ 
+        Key = self.GetMovementKey(params.ukey, caller.ParentMovie.WPCOwner)
+        if Key:
+            self.GlobalHandleInput(caller.PanelInputKey, caller.ParentMovie.GetControllerID(), Key, params.uevent)
+
+
+        elif params.ukey == caller.ParentMovie.WPCOwner.PlayerInput.GetKeyForAction("Use"):
+            caller.PanelInputKey(caller.ParentMovie.GetControllerID(), "Enter", params.uevent)
+
+        elif params.ukey == caller.ParentMovie.WPCOwner.PlayerInput.GetKeyForAction("StatusMenu"):
+            caller.NormalInputKey(caller.ParentMovie.GetControllerID(), "Escape", 0)
+
+        elif params.ukey == caller.ParentMovie.WPCOwner.PlayerInput.GetKeyForAction("Reload") and not caller.bOnLeftPanel and params.uevent == 1:
+            Thing = caller.GetSelectedThing()
+            if Thing:
+                CurrentMark = Thing.GetMark()
+                CurrentMark += 1
+                if CurrentMark > 2:
+                    CurrentMark = 0
+                caller.ParentMovie.PlayUISound('MenuBack')
+                Thing.SetMark(CurrentMark)
+                caller.RefreshRightPanel()
+
         return True
 
 
@@ -225,6 +292,9 @@ class BetterUIControls(ModMenu.SDKMod):
         unrealsdk.RegisterHook("WillowGame.WillowGameViewportClient.Tick", "SetMark", SetMark)
         return
     
+    def GetRespecTip(self, PC, Cost) -> str:
+        Key = PC.PlayerInput.GetKeyForAction("Reload")
+        return f"[{Key}] Respec: ${Cost}"
 
     def Enable(self) -> None:
         unrealsdk.RegisterHook("WillowGame.QuestAcceptGFxMovie.HandleRewardInputKey", "HandleRewardInputKey", self.HandleRewardInputKey)
