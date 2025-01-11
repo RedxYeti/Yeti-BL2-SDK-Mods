@@ -5,7 +5,7 @@ class BetterUIControls(ModMenu.SDKMod):
     Name = "Better UI Controls"
     Author = "Yeti"
     Description = "Enables movement keys to work like arrow keys for most menus."
-    Version = "0.5"
+    Version = "0.75"
     SupportedGames: ModMenu.Game = ModMenu.Game.BL2
     Types: ModMenu.ModTypes = ModMenu.ModTypes.Utility
     SaveEnabledState: ModMenu.EnabledSaveType = ModMenu.EnabledSaveType.LoadWithSettings
@@ -25,12 +25,29 @@ class BetterUIControls(ModMenu.SDKMod):
         if params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("Use"):
             InputFunc(caller.GetControllerID(), "Enter", params.uevent)
             return True
-
-        if params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("Reload") and params.uevent == 0 and caller.GetCurrentTab() == 3:
-            Thing = caller.InventoryPanel.GetSelectedThing()
-            if Thing:
-                self.CycleMark(caller, Thing, True)
-                return True
+        
+        if caller.GetCurrentTab() == 3 and params.uevent == 0:
+            if params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("Reload"):
+                Thing = caller.InventoryPanel.GetSelectedThing()
+                if Thing:
+                    self.CycleMark(caller, Thing, True)
+                    return True
+            if caller.InventoryPanel.bInEquippedView:
+                if params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("UseSecondary"):
+                    InvPanel = caller.InventoryPanel
+                    Thing = InvPanel.GetSelectedThing()
+                    if Thing and InvPanel.SlotsUsed < InvPanel.MaxCapacity:
+                        InvPanel.UnreadyThing(Thing)
+                        caller.PlayUISound('UnEquip')
+            else:
+                movie = caller.InventoryPanel.BackpackPanel
+                if params.ukey == "Home":
+                    movie.SetSelectedIndexByThing(movie.GetThingByIndex(1))
+                elif params.ukey == "End":
+                    for i in range(caller.InventoryPanel.MaxCapacity + 1, -1, -1):
+                        if movie.GetThingByIndex(i):
+                            movie.SetSelectedIndexByThing(movie.GetThingByIndex(i))
+                            break
             
         return True
     
@@ -93,10 +110,23 @@ class BetterUIControls(ModMenu.SDKMod):
         elif params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("StatusMenu"):
             caller.TwoPanelInterface.NormalInputKey(caller.GetControllerID(), "Escape", 0)
 
-        elif params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("Reload") and params.uevent == 0 and not caller.TwoPanelInterface.bOnLeftPanel:
-            Thing = caller.TwoPanelInterface.GetSelectedThing()
-            if Thing:
-                self.CycleMark(caller, Thing, False)
+        if not caller.TwoPanelInterface.bOnLeftPanel and params.uevent == 1:
+            movie = caller.TwoPanelInterface.PlayerPanel
+            if params.ukey == caller.WPCOwner.PlayerInput.GetKeyForAction("Reload"):
+                Thing = caller.TwoPanelInterface.GetSelectedThing()
+                if Thing:
+                    self.CycleMark(caller, Thing, False)
+
+    
+            elif params.ukey == "Home":
+                movie.SetSelectedIndexByThing(movie.GetThingByIndex(1))
+            elif params.ukey == "End":
+                Capacity = caller.WPCOwner.GetInventoryPawn().InvManager.GetUnreadiedInventoryMaxSize()
+                for i in range(Capacity - 1, -1, -1):
+                    if movie.GetThingByIndex(i):
+                        movie.SetSelectedIndexByThing(movie.GetThingByIndex(i))
+                        break
+                
         return True
     
 
@@ -221,16 +251,35 @@ class BetterUIControls(ModMenu.SDKMod):
         elif params.ukey == caller.ParentMovie.WPCOwner.PlayerInput.GetKeyForAction("StatusMenu"):
             caller.NormalInputKey(caller.ParentMovie.GetControllerID(), "Escape", 0)
 
-        elif params.ukey == caller.ParentMovie.WPCOwner.PlayerInput.GetKeyForAction("Reload") and not caller.bOnLeftPanel and params.uevent == 1:
-            Thing = caller.GetSelectedThing()
-            if Thing:
-                CurrentMark = Thing.GetMark()
-                CurrentMark += 1
-                if CurrentMark > 2:
-                    CurrentMark = 0
-                caller.ParentMovie.PlayUISound('MenuBack')
-                Thing.SetMark(CurrentMark)
-                caller.RefreshRightPanel()
+        if params.uevent == 1:
+            if params.ukey == caller.ParentMovie.WPCOwner.PlayerInput.GetKeyForAction("Reload") and caller.bOnLeftPanel:
+                Thing = caller.GetSelectedThing()
+                if Thing:
+                    CurrentMark = Thing.GetMark()
+                    CurrentMark += 1
+                    if CurrentMark > 2:
+                        CurrentMark = 0
+                    caller.ParentMovie.PlayUISound('MenuBack')
+                    Thing.SetMark(CurrentMark)
+                    caller.RefreshRightPanel()
+                    return True
+
+
+            CurrentPanel = caller.StoragePanel if caller.bOnLeftPanel else caller.PlayerPanel
+            if params.ukey == "Home":
+                CurrentPanel.SetSelectedIndexByThing(CurrentPanel.GetThingByIndex(1))
+            elif params.ukey == "End":
+                if caller.bOnLeftPanel:
+                    try:
+                        Capacity = caller.ParentMovie.BankStorage.GetMaxSize() + 1
+                    except:
+                        Capacity = caller.ParentMovie.StashStorage.GetMaxSize() + 1
+                else:
+                    Capacity = caller.ParentMovie.WPCOwner.GetInventoryPawn().InvManager.GetUnreadiedInventoryMaxSize() - 1
+                for i in range(Capacity, -1, -1):
+                    if CurrentPanel.GetThingByIndex(i):
+                        CurrentPanel.SetSelectedIndexByThing(CurrentPanel.GetThingByIndex(i))
+                        break
 
         return True
 
