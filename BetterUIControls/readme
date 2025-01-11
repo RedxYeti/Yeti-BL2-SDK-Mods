@@ -1,5 +1,10 @@
 This mod will let you use your movement keys (in my case WASD) to control a bunch of menus. It also enables your Use key (in my case E) to select items in menus. The mod will automatically adjust to your keys.
 
+Update 0.75:
+Added Home/End to quickly go to the top or bottom of your backpack or bank
+Added Secondary Use to quickly unequip equipped items
+
+
 Update 0.7:
 Added the Stash Menus
 Added a Quick Respec by hitting you reload key in the New U Menu
